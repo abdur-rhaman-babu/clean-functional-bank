@@ -1,6 +1,4 @@
-// const depositButton = document.getElementById('deposit-button')
-// const depositInput = document.getElementById('current-deposit')
-// const previousDepo = document.getElementById('previous-deposit')
+const totalBalance = document.getElementById('total-balance');
 
 // getInputValue
 const getInputValue = (inputId) =>{
@@ -18,14 +16,41 @@ const getInnerText = (inputText,amount) =>{
     outputText.innerText = totalAmount;
 }
 
+// getInnerValue
+const getInnerTextValue = (inputId) =>{
+    const previousBalance = document.getElementById(inputId)
+    const value = parseFloat(previousBalance.innerText);
+    return value;
+}
+// getBalance
+const getBalance = (amount,isAdd) =>{
+    const balance = totalBalance.innerText;
+    if( isAdd === true){
+        totalBalance.innerText = parseFloat(balance) + parseFloat(amount)
+    }else{
+        totalBalance.innerText = parseFloat(balance) - parseFloat(amount)
+    }
+}
+
 // deposit
 document.getElementById('deposit-button').addEventListener('click', ()=>{
-const amount = getInputValue('current-deposit')
-getInnerText('previous-deposit',amount)
+    const amount = getInputValue('current-deposit')
+    if ( amount > 0){
+    getInnerText('previous-deposit',amount)
+    getBalance(amount,true)
+    }else{
+        alert('filled the input')
+    }
 })
 
 // withdraw
 document.getElementById('withdraw-button').addEventListener('click', ()=>{
     const amount = getInputValue('current-withdraw')
+    const balance = getInnerTextValue('total-balance')
+    if ( amount > 0 && amount <= balance){
     getInnerText('previous-withdraw',amount)
+    getBalance(amount,false)
+    }else{
+        alert('insuffient balance')
+    }
 })
